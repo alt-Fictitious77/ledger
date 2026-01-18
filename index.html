@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ledger - Lifestyle Planning</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='10' fill='%23d4af37'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='%23222'>L</text></svg>">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Google AdSense Script - Replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+         crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Ledger</h1>
+        <div class="subheader-container">
+            <div class="ad-container" id="ad-left">
+                <!-- Google AdSense Ad Unit - Replace with your actual ad code -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <h2>Lifestyle Planning + Visualizing</h2>
+
+            <div class="ad-container" id="ad-right">
+                <!-- Google AdSense Ad Unit - Replace with your actual ad code -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="card" id="upload-section">
+            <h3>Load Previous Ledger</h3>
+            <p class="privacy-notice">
+                Ledger does not store your information. To load previous slates, download your information and upload it here.
+            </p>
+            <div class="drop-zone" id="drop-zone">
+                <p>Drag & Drop JSON file here or Click to Upload</p>
+                <input type="file" id="json-upload" accept=".json" hidden>
+            </div>
+        </section>
+
+        <section class="card disclaimer-card" style="background: rgba(251, 191, 36, 0.1); border: 1px solid #fbbf24;">
+            <p style="margin: 0; color: #fbbf24; font-size: 0.9rem;">
+                <strong>Disclaimer:</strong> This calculator provides <em>approximations</em> for educational and planning purposes only.
+                Tax laws vary by jurisdiction and change frequently. 100% accuracy is not possible.
+                For precise tax calculations, consult a qualified tax professional or accountant in your region.
+            </p>
+        </section>
+
+        <section class="card">
+            <div class="input-group">
+                <label for="starting-amount">Starting Amount ($)</label>
+                <input type="number" id="starting-amount" value="0">
+            </div>
+            <p class="note">Could be all your money and assets, or it could be a specific source - it's all up to you.</p>
+            <p class="note">Could be based in reality, or your imagined life - it's all up to you.</p>
+        </section>
+
+        <section class="card">
+            <h3>Time Preference</h3>
+            <div class="time-btn-grid" id="time-preference-container">
+                <button class="time-btn" data-value="1_month">1 Month</button>
+                <button class="time-btn" data-value="3_months">3 Months</button>
+                <button class="time-btn" data-value="6_months">6 Months</button>
+                <button class="time-btn selected" data-value="1_year">1 Year</button>
+                <button class="time-btn" data-value="5_years">5 Years</button>
+                <button class="time-btn" data-value="10_years">10 Years</button>
+                <button class="time-btn" data-value="15_years">15 Years</button>
+                <button class="time-btn" data-value="20_years">20 Years</button>
+                <button class="time-btn" data-value="25_years">25 Years</button>
+                <button class="time-btn" data-value="30_years">30 Years</button>
+                <button class="time-btn" data-value="40_years">40 Years</button>
+                <button class="time-btn" data-value="50_years">50 Years</button>
+                <button class="time-btn" data-value="60_years">60 Years</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="slider-group">
+                <label>Yearly Income ($)</label>
+                <div class="slider-row">
+                    <input type="range" id="income-slider" min="0" max="1000000" step="1000" value="0">
+                    <input type="number" id="income-input" value="0">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Country</label>
+                <select id="country-select">
+                    <optgroup label="North America">
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                    </optgroup>
+                    <optgroup label="United Kingdom">
+                        <option value="EN">England</option>
+                        <option value="SC">Scotland</option>
+                        <option value="WA">Wales</option>
+                        <option value="NI">Northern Ireland</option>
+                    </optgroup>
+                    <optgroup label="Western Europe">
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                        <option value="NL">Netherlands</option>
+                        <option value="CH">Switzerland</option>
+                    </optgroup>
+                    <optgroup label="Nordic Countries">
+                        <option value="DK">Denmark</option>
+                        <option value="SE">Sweden</option>
+                        <option value="NO">Norway</option>
+                        <option value="FI">Finland</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>State/Province</label>
+                <select id="region-select">
+                    <option value="">Select Region</option>
+                </select>
+            </div>
+        </section>
+
+        <div id="dynamic-financials" style="width: 100%;">
+            <div class="card" style="padding: 1rem; margin-bottom: 1rem;">
+                <div class="toggle-group" style="margin-bottom: 0; justify-content: center;">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="detailed-mode-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <div>
+                        <span style="font-weight: 600;">Detailed Mode</span>
+                        <p class="note" style="margin: 0; font-size: 0.8rem;">Including donations, business expenses, stock investments...</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="card collapsible-section">
+                <button class="btn-secondary toggle-btn" id="toggle-income-btn">+ Additional Income</button>
+                <div id="income-section" class="collapsible-content" style="display: none;">
+                    <div id="additional-income-container"></div>
+                    <button class="btn-secondary" id="add-income-btn">+ Add Income Source</button>
+                </div>
+            </section>
+
+            <section class="card collapsible-section detailed-section" style="display: none;">
+                <button class="btn-secondary toggle-btn" id="toggle-donation-btn">+ Donations</button>
+                <div id="donation-section" class="collapsible-content" style="display: none;">
+                    <div id="donations-container"></div>
+                    <button class="btn-secondary" id="add-donation-btn">+ Add Donation</button>
+                </div>
+            </section>
+
+            <section class="card collapsible-section detailed-section" style="display: none;">
+                <button class="btn-secondary toggle-btn" id="toggle-expense-btn">+ Business Expenses</button>
+                <div id="expense-section" class="collapsible-content" style="display: none;">
+                    <div id="business-expense-container"></div>
+                    <button class="btn-secondary" id="add-expense-btn">+ Add Business Expense</button>
+                </div>
+            </section>
+
+            <section class="card collapsible-section detailed-section" style="display: none;">
+                <button class="btn-secondary toggle-btn" id="toggle-living-btn">+ Living Expenses</button>
+                <div id="living-section" class="collapsible-content" style="display: none;">
+                    <div id="living-expense-container"></div>
+                    <button class="btn-secondary" id="add-living-btn">+ Add Living Expense</button>
+                    <p class="note" style="margin-top: 0.5rem;">
+                        Track your recurring utility bills: Electricity, Internet, Water, Phone, etc.
+                    </p>
+                </div>
+            </section>
+
+            <section class="card collapsible-section detailed-section" style="display: none;">
+                <button class="btn-secondary toggle-btn" id="toggle-stock-btn">+ Stock Investments</button>
+                <div id="stock-section" class="collapsible-content" style="display: none;">
+                    <div id="stocks-container"></div>
+                    <button class="btn-secondary" id="add-stock-btn">+ Add Stock Investment</button>
+                    <p class="note" style="margin-top: 0.5rem;">
+                        Note: Money allocated here is transferred from your <strong>Liquid Cash</strong> to your <strong>Assets</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <section class="card collapsible-section detailed-section" style="display: none;">
+                <button class="btn-secondary toggle-btn" id="toggle-prev-stock-btn">+ Previous Stock Investments</button>
+                <div id="prev-stock-section" class="collapsible-content" style="display: none;">
+                    <div id="prev-stocks-container"></div>
+                    <button class="btn-secondary" id="add-prev-stock-btn">+ Add Previous Stock Investment</button>
+                    <p class="note" style="margin-top: 0.5rem;">
+                        Note: Previous investments do <strong>not</strong> deduct from your liquid cash. They represent existing holdings.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="highlight-section" style="width: 100%;">
+            <h2>True Income: <span id="true-income-display">$0.00</span></h2>
+        </div>
+
+        <section class="card">
+            <h3>Target Purchases & Habits</h3>
+            <div id="target-purchase-container"></div>
+            <button class="btn-secondary" id="add-purchase-btn">+ Add New Target Purchase</button>
+            
+            <div class="action-row">
+                <button class="btn-primary" id="view-receipt-btn">View "Receipt of Reality"</button>
+                <button class="btn-outline" id="open-purchase-graph-btn">View Wealth Impact Graph</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>Future Planned Purchases</h3>
+            <div id="future-purchase-container"></div>
+            <button class="btn-secondary" id="add-future-btn">+ Add Future Purchase</button>
+            <p class="note" style="margin-top: 0.5rem;">
+                Items here only impact your wealth <strong>after</strong> the selected start date.
+            </p>
+            <div class="action-row">
+                <button class="btn-primary" id="view-future-receipt-btn">View "Receipt of Reality"</button>
+                <button class="btn-outline" id="open-future-graph-btn">View Wealth Impact Graph</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>Vehicle Purchase</h3>
+            <div class="input-group">
+                <input type="text" placeholder="Vehicle Name (e.g. Tesla Model 3)" id="vehicle-name">
+            </div>
+            <div class="slider-group">
+                <label>Price ($)</label>
+                <div class="slider-row">
+                    <input type="range" id="vehicle-slider" min="0" max="200000" step="500" value="0">
+                    <input type="number" id="vehicle-input" value="0">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Purchase Date</label>
+                <input type="date" id="vehicle-date">
+            </div>
+
+            <h3>Property Purchase</h3>
+            <div class="toggle-group">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="cash-purchase-toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span>Paid Fully in Cash?</span>
+            </div>
+
+            <div class="slider-group">
+                <label>Down Payment / Total Price ($)</label>
+                <div class="slider-row">
+                    <input type="range" id="property-down-slider" min="0" max="1000000" step="1000" value="0">
+                    <input type="number" id="property-down-input" value="0">
+                </div>
+            </div>
+
+            <div id="mortgage-section">
+                <div class="slider-group">
+                    <label>Mortgage Amount ($)</label>
+                    <div class="slider-row">
+                        <input type="range" id="mortgage-slider" min="0" max="2000000" step="1000" value="0">
+                        <input type="number" id="mortgage-input" value="0">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Mortgage Duration</label>
+                    <select id="mortgage-duration">
+                        <option value="15">15 Years</option>
+                        <option value="30" selected>30 Years</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Property Purchase Date</label>
+                <input type="date" id="property-date">
+            </div>
+
+            <h3>Property Rent (Monthly)</h3>
+            <div class="slider-group">
+                <div class="slider-row">
+                    <input type="range" id="rent-slider" min="0" max="20000" step="50" value="0">
+                    <input type="number" id="rent-input" value="0">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Rental Start Date</label>
+                <input type="date" id="rent-date">
+            </div>
+        </section>
+
+        <section class="card final-section" style="text-align: center;">
+            <h2>Final Lifestyle Calculation</h2>
+
+            <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin: 1rem 0;">
+                <label class="switch">
+                    <input type="checkbox" id="inflation-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span style="font-weight: 500;">Apply Inflation (The "Real Value" Reality Check)</span>
+            </div>
+
+            <div class="final-grid">
+                <div class="final-box cash-box">
+                    <div class="box-label text-green">Total Liquid Cash</div>
+                    <div id="display-cash" class="box-value text-green-dark">$0</div>
+                    <div class="box-sub">(Money in Bank)</div>
+                </div>
+
+                <div class="final-box asset-box">
+                    <div class="box-label text-blue">Asset Value</div>
+                    <div id="display-assets" class="box-value text-blue-dark">$0</div>
+                    <div class="box-sub">(Property + Vehicle + Stocks)</div>
+                </div>
+
+                <div class="final-box worth-box">
+                    <div class="box-label text-purple">Total Net Worth</div>
+                    <div id="display-net-worth" class="box-value text-purple-dark">$0</div>
+                    <div class="box-sub">(Cash + Assets - Debt)</div>
+                </div>
+            </div>
+
+            <div id="inflation-readout" style="font-size: 1rem; color: #ef4444; display: none; margin-bottom: 1rem;">
+            </div>
+
+            <div id="detailed-worth-section" style="display: none; margin: 1.5rem 0; padding: 1rem; background: rgba(168, 85, 247, 0.05); border-radius: 0.5rem;">
+                <h4 style="margin-bottom: 1rem;">Detailed Net Worth Breakdown</h4>
+                <p class="note" style="margin-bottom: 1rem;">Values shown above are <strong>cash-based projections</strong>. The detailed breakdown below includes asset appreciation/depreciation.</p>
+
+                <div class="worth-breakdown-grid">
+                    <div class="worth-item">
+                        <span class="worth-label">Vehicle Value</span>
+                        <span id="vehicle-depreciated-value" class="worth-value">$0</span>
+                        <span class="worth-note">(After depreciation: -10%/yr)</span>
+                    </div>
+                    <div class="worth-item">
+                        <span class="worth-label">Property Equity</span>
+                        <span id="property-appreciated-value" class="worth-value">$0</span>
+                        <span class="worth-note">(After appreciation: +3.5%/yr)</span>
+                    </div>
+                    <div class="worth-item">
+                        <span class="worth-label">Stock Portfolio</span>
+                        <span id="stocks-projected-value" class="worth-value">$0</span>
+                        <span class="worth-note">(Projected with growth rates)</span>
+                    </div>
+                </div>
+
+                <div class="wealth-comparison" style="margin-top: 1.5rem;">
+                    <h5 style="margin-bottom: 0.75rem;">How You Compare</h5>
+                    <div id="wealth-percentile-context" class="percentile-context"></div>
+
+                    <div class="decade-comparison" style="margin-top: 1rem;">
+                        <h6>Average Home Prices by Wealth Tier</h6>
+                        <div id="home-price-tiers" class="tier-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="benchmark-box">
+                <h3>Your Reality Ranking</h3>
+                <div class="ranking-grid">
+                    <div class="ranking-section">
+                        <h4>Income Percentile</h4>
+                        <div class="ranking-row">
+                            <span class="ranking-label">State/Region:</span>
+                            <span id="income-state-percentile" class="ranking-value">--%</span>
+                        </div>
+                        <div class="ranking-row">
+                            <span class="ranking-label">Country:</span>
+                            <span id="income-country-percentile" class="ranking-value">--%</span>
+                        </div>
+                        <div class="ranking-row">
+                            <span class="ranking-label">Global:</span>
+                            <span id="income-global-percentile" class="ranking-value">--%</span>
+                        </div>
+                    </div>
+                    <div class="ranking-section">
+                        <h4>Net Worth Percentile</h4>
+                        <div class="ranking-row">
+                            <span class="ranking-label">State/Region:</span>
+                            <span id="networth-state-percentile" class="ranking-value">--%</span>
+                        </div>
+                        <div class="ranking-row">
+                            <span class="ranking-label">Country:</span>
+                            <span id="networth-country-percentile" class="ranking-value">--%</span>
+                        </div>
+                        <div class="ranking-row">
+                            <span class="ranking-label">Global:</span>
+                            <span id="networth-global-percentile" class="ranking-value">--%</span>
+                        </div>
+                    </div>
+                </div>
+                <p id="reality-context-display" style="margin-top: 1rem;"></p>
+            </div>
+            
+            <div class="action-row">
+                <button class="btn-primary" id="open-visual-graphs-btn">Open Visual Graphs</button>
+                <button class="btn-success" id="view-lifestyle-btn">View Lifestyle Calculations</button>
+            </div>
+        </section>
+
+        <div id="graph-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" data-modal="graph-modal">&times;</span>
+                <h2 id="graph-title">Visual Projection</h2>
+                <p id="graph-inflation-note" class="inflation-note" style="display: none; text-align: center; color: #ff6b6b; font-style: italic; margin-bottom: 1rem;">Adjusted for inflation compared to what things are worth today</p>
+                <div id="graph-purchase-summary" style="display: none; background: rgba(249, 115, 22, 0.1); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; border: 1px solid #f97316; font-size: 0.85rem;"></div>
+                <div class="chart-wrapper" style="display: flex; gap: 1rem;">
+                    <div class="chart-y-axis-info" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); display: flex; flex-direction: column; justify-content: space-between; padding: 10px 0; font-size: 0.75rem; color: #888; min-width: 60px;">
+                        <span id="y-axis-max">$0</span>
+                        <span style="color: var(--gold);">Wealth</span>
+                        <span id="y-axis-min">$0</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <div class="chart-container" style="cursor: zoom-in;">
+                            <canvas id="lifestyleChart"></canvas>
+                        </div>
+                        <div class="chart-x-axis-info" style="display: flex; justify-content: space-between; padding: 5px 10px; font-size: 0.75rem; color: #888;">
+                            <span id="x-axis-min">Today</span>
+                            <span style="color: var(--gold);">Time</span>
+                            <span id="x-axis-max">Year 0</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="graph-hover-info" style="text-align: center; padding: 0.5rem; background: rgba(0,0,0,0.3); border-radius: 4px; margin-top: 0.5rem; min-height: 2rem;">
+                    <span style="color: #888;">Hover over graph to see details • Click to view breakdown</span>
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 0.75rem;">
+                    <label for="graph-date-picker" style="color: #888; font-size: 0.9rem;">Jump to date:</label>
+                    <input type="date" id="graph-date-picker" style="padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid #444; background: #1a1a2e; color: #fff; font-size: 0.9rem;">
+                    <button id="graph-goto-date-btn" class="btn-outline" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.9rem;">Go</button>
+                </div>
+                <div class="modal-nav">
+                    <button id="prev-graph-btn" class="btn-secondary" style="width: auto;">&lt; Previous</button>
+                    <button id="next-graph-btn" class="btn-secondary" style="width: auto;">Next &gt;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graph Detail Popup -->
+        <div id="graph-detail-modal" class="modal">
+            <div class="modal-content" style="max-width: 500px;">
+                <span class="close-modal" data-modal="graph-detail-modal">&times;</span>
+                <h2 id="graph-detail-title">Financial Snapshot</h2>
+                <div id="graph-detail-body" style="padding: 1rem;"></div>
+            </div>
+        </div>
+
+        <div id="receipt-modal" class="modal">
+            <div class="modal-content receipt-content">
+                <span class="close-modal" data-modal="receipt-modal">&times;</span>
+                <h2>Receipt of Reality</h2>
+                <div id="receipt-body" class="receipt-body"></div>
+            </div>
+        </div>
+
+        <div id="lifestyle-modal" class="modal">
+            <div class="modal-content lifestyle-content">
+                <span class="close-modal" data-modal="lifestyle-modal">&times;</span>
+                <h2>Lifestyle Calculations</h2>
+                <div id="lifestyle-body" class="lifestyle-body"></div>
+                <div class="modal-nav">
+                    <button id="download-lifestyle-zip-btn" class="btn-primary" style="width: auto;">Download All (PDF + JSON)</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="status-stack-container">
+        <div id="status-house" class="status-item" title="Housing Level">⛺</div>
+        <div id="status-vehicle" class="status-item" title="Vehicle Level">🚶</div>
+        <div id="status-label">Survivor</div>
+    </div>
+
+    <div id="status-popup">
+        <h4>Status Levels</h4>
+        <div id="status-list"></div>
+    </div>
+
+    <div id="video-ad-container">
+        <div class="video-header">
+            <span id="ad-timer">Ad: 15s</span>
+            <button id="skip-ad-btn" disabled>Skip</button>
+        </div>
+        <div class="video-content">
+            <div>Video Ad Playing...</div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 2rem; color: #888; font-size: 0.85rem; border-top: 1px solid #333; margin-top: 2rem;">
+        <a href="privacy.html" style="color: var(--gold); margin: 0 1rem;">Privacy Policy</a>
+        <a href="terms.html" style="color: var(--gold); margin: 0 1rem;">Terms of Service</a>
+        <p style="margin-top: 1rem;">&copy; 2025 Ledger. For educational purposes only.</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <!-- Initialize AdSense ads after page load -->
+    <script>
+        // Push ads to adsbygoogle array when DOM is ready
+        window.addEventListener('load', function() {
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.log('AdSense not loaded');
+            }
+        });
+    </script>
+</body>
+</html>
