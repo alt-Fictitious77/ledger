@@ -5285,7 +5285,7 @@ function initDragDrop() {
 // ============ INIT ============
 function init() {
     // Init ad system
-    initAdSystem();
+    // initAdSystem();
 
     // Init drag & drop
     initDragDrop();
